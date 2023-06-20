@@ -1,0 +1,31 @@
+# 如果在 pom 文件中继承了 spring-boot-starter-parent pom文件，那么maven-resources-plugins的 Filtering 默认的过滤符号就从 ${*} 改为 @...@
+
+spring:
+  application:
+    name: user
+  profiles:
+    active:
+      - "@activated.profile@"
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3307/scaffold?serverTimezone=Asia/Shanghai&characterEncoding=UTF-8
+    username: root
+    password: root
+  jackson:
+    date-format: yyyy-MM-dd HH:mm
+    time-zone: GMT+8
+  cloud:
+    nacos:
+      server-addr: 172.16.10.132:8848
+      discovery:
+        username: nacos
+        password: nacos
+
+server:
+  port: 8085
+  servlet:
+    context-path: /user
+
+jwt:
+  auth-url: /login
+  secret: e2lVkjDNgBcC6iFaW9w1oAEfT0pOxtyG
+  expire: 1000000

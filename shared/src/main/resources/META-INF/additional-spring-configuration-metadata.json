@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "jwt",
+      "type": "com.wang.scaffold.sharded.security.JwtProperties"
+    }
+  ]
+}

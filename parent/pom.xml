@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.5.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.wang</groupId>
+    <artifactId>scaffold-parent</artifactId>
+    <version>0.0.1</version>
+    <packaging>pom</packaging>
+
+
+    <!-- properties：定义全局变量 -->
+    <properties>
+        <java.version>11</java.version>
+        <spring.cloud.alibaba.version>2.2.6.RELEASE</spring.cloud.alibaba.version>
+        <spring-cloud.version>Hoxton.SR9</spring-cloud.version>
+        <mybatis-plus.version>3.4.1</mybatis-plus.version>
+        <packaging.type>jar</packaging.type>
+        <jjwt.version>0.11.2</jjwt.version>
+        <lettuce.version>6.0.1.RELEASE</lettuce.version>
+        <apache-poi.version>4.1.2</apache-poi.version>
+        <commons-beanutils.version>1.9.4</commons-beanutils.version>
+    </properties>
+
+    <!-- 指定仓库 -->
+    <repositories>
+        <repository>
+            <id>central</id>
+            <name>Nexus aliyun</name>
+            <url>https://maven.aliyun.com/nexus/content/groups/public</url>
+        </repository>
+    </repositories>
+
+    <!-- 版本依赖管理：统一管理项目的版本号。
+    父项目只是声明依赖，子项目需要写明需要的依赖 -->
+    <dependencyManagement>
+       <dependencies>
+
+           <dependency>
+               <groupId>com.wang</groupId>
+               <artifactId>scaffold-core</artifactId>
+               <version>0.0.1</version>
+           </dependency>
+
+           <dependency>
+               <groupId>com.wang</groupId>
+               <artifactId>scaffold-shared</artifactId>
+               <version>0.0.1</version>
+           </dependency>
+
+           <dependency>
+               <groupId>io.lettuce</groupId>
+               <artifactId>lettuce-core</artifactId>
+               <version>${lettuce.version}</version>
+           </dependency>
+
+           <!--spring cloud alibaba 版本管理器-->
+           <dependency>
+               <groupId>com.alibaba.cloud</groupId>
+               <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+               <version>${spring.cloud.alibaba.version}</version>
+               <type>pom</type>
+               <!-- import只能用在dependencyManagement块中
+                它将spring-boot-dependencies 中dependencyManagement下的dependencies插入到当前工程的dependencyManagement中，
+                所以不存在依赖传递。-->
+               <scope>import</scope>
+           </dependency>
+           <!--spring cloud 版本管理器-->
+           <dependency>
+               <groupId>org.springframework.cloud</groupId>
+               <artifactId>spring-cloud-dependencies</artifactId>
+               <version>${spring-cloud.version}</version>
+               <type>pom</type>
+               <scope>import</scope>
+           </dependency>
+           <!-- MyBatis-Plus -->
+           <dependency>
+               <groupId>com.baomidou</groupId>
+               <artifactId>mybatis-plus-boot-starter</artifactId>
+               <version>${mybatis-plus.version}</version>
+           </dependency>
+           <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+           <dependency>
+               <groupId>org.apache.poi</groupId>
+               <artifactId>poi-ooxml</artifactId>
+               <version>${apache-poi.version}</version>
+           </dependency>
+           <dependency>
+               <groupId>commons-beanutils</groupId>
+               <artifactId>commons-beanutils</artifactId>
+               <version>${commons-beanutils.version}</version>
+           </dependency>
+
+           <dependency>
+               <groupId>io.jsonwebtoken</groupId>
+               <artifactId>jjwt-api</artifactId>
+               <version>${jjwt.version}</version>
+           </dependency>
+           <dependency>
+               <groupId>io.jsonwebtoken</groupId>
+               <artifactId>jjwt-impl</artifactId>
+               <version>${jjwt.version}</version>
+           </dependency>
+           <dependency>
+               <groupId>io.jsonwebtoken</groupId>
+               <artifactId>jjwt-jackson</artifactId>
+               <version>${jjwt.version}</version>
+           </dependency>
+
+           <!-- lombok -->
+           <dependency>
+               <groupId>org.projectlombok</groupId>
+               <artifactId>lombok</artifactId>
+               <version>1.18.26</version>
+           </dependency>
+
+       </dependencies>
+    </dependencyManagement>
+
+
+    <!-- 不显式指定环境时, 会取 activeByDefault true 的环境变量,
+     需要注意的是: 没指定 activeByDefault true 的其他相同 profile id 的 properties 是不会生效的-->
+    <profiles>
+        <profile>
+            <!--通过-P参数激活，mvn compile -Pdev-->
+            <id>dev</id>
+            <properties>
+                <!--根据-D参数激活-->
+                <activated.profile>dev</activated.profile>
+            </properties>
+            <!--activation标识什么情况下激活该profile-->
+            <activation>
+                <!--默认情况下，激活该profile-->
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <resources>
+                    <resource>
+                        <filtering>false</filtering>
+                        <directory>src/main/resources</directory>
+                        <excludes>
+                            <exclude>application-docker.*</exclude>
+                        </excludes>
+                    </resource>
+                    <resource>
+                        <filtering>true</filtering>
+                        <directory>src/main/resources</directory>
+                        <includes>
+                            <include>application.*</include>
+                            <include>application-dev.*</include>
+                        </includes>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+    </profiles>
+
+</project>

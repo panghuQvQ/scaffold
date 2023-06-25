@@ -51,17 +51,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired private PhoneCodeAuthenticationProvider phoneCodeAuthenticationProvider;
 	@Autowired private CaptchaInterceptor captchaInterceptor;
 
+
+	/**
+	 * 跨域是指一个域下的脚本请求另一个域下的资源.这是由浏览器的同源策略(Same origin policy)造成的,是浏览器保护用户的一种安全限制
+	 * 同源:指协议、域名、端口号均相同.如果其中一个不同,则属于跨域.
+	 *
+	 * 开启SpringSecurity的跨域访问：
+	 * @param httpSecurity
+	 * @throws Exception
+	 */
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity.cors().and()
-		.csrf().disable()
-		.authorizeRequests()
-		.anyRequest().authenticated()
+		httpSecurity.cors().and() // 开启跨域资源共享
+		.csrf().disable() // 关闭 csrf
+		.authorizeRequests() // 开启 对url进行访问权限控制
+		.anyRequest().authenticated() // 匹配所有的请求，并且所有的请求都需要登录认证
 		.and()
-		.addFilter(this.jwtAuthenticationFilter())
+		.addFilter(this.jwtAuthenticationFilter()) // 添加认证过滤器
 //		.addFilter(this.jwtAuthorizationFilter())
-//		.sessionManagement()
-//		.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 因为使用了JWT 所以关闭Session
 		;
 
 	}
@@ -80,7 +88,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// 验证码校验拦截器
 //		filter.addPreAuthenInterceptor(captchaInterceptor);
 		// 手机app版本，低版本拦截器
-		filter.addPreAuthenInterceptor(new ClientAppVersionInterceptor());
+//		filter.addPreAuthenInterceptor(new ClientAppVersionInterceptor());
 		return filter;
 	}
 //
@@ -90,19 +98,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //		return filter;
 //	}
 //
-//	@Override
-//	public void configure(WebSecurity web) throws Exception {
-//		web.ignoring().antMatchers(BYPASS_PATTERNS);
-//	}
-//
-//	@Override
-//	public void configure(AuthenticationManagerBuilder auth) throws Exception {
-//		auth
-//		.userDetailsService(userDetailsService)
-//		.passwordEncoder(passwordEncoder());
-//		// 添加手机号码登录的验证类
-//		auth.authenticationProvider(phoneCodeAuthenticationProvider);
-//	}
+
+	/**
+	 * 待注释
+	 * @param web
+	 * @throws Exception
+	 */
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().antMatchers(BYPASS_PATTERNS);
+	}
+
+	@Override
+	public void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth
+		.userDetailsService(userDetailsService)
+		.passwordEncoder(passwordEncoder());
+		// 添加手机号码登录的验证类
+		auth.authenticationProvider(phoneCodeAuthenticationProvider);
+	}
 
 	/**
 	 * @title 注入 BCryptPasswordEncoder

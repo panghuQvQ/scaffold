@@ -46,7 +46,7 @@ public class SysLogAspect {
 	/** 异步记录日志 */
 	private static ExecutorService logExecutorService = Executors.newSingleThreadExecutor();
 
-	@Pointcut("@annotation(com.byx.scaffold.annotation.SysLog)")
+	@Pointcut("@annotation(com.wang.scaffold.annotation.SysLog)")
 	public void logPointCut() {
 
 	}

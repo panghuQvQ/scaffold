@@ -64,7 +64,6 @@ public class AuthenticationTokenFactory {
 		 * 手机端登录，生成 token
 		 * 手机端会传递这个参数 x-login-type
  		 */
-
 		String loginType = request.getHeader("x-login-type");
 		if (StringUtils.hasText(loginType)) {
 			switch(loginType) {

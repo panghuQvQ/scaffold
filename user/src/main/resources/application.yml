@@ -1,5 +1,4 @@
 # 如果在 pom 文件中继承了 spring-boot-starter-parent pom文件，那么maven-resources-plugins的 Filtering 默认的过滤符号就从 ${*} 改为 @...@
-
 spring:
   application:
     name: user
@@ -8,7 +7,7 @@ spring:
       - "@activated.profile@"
       - captcha
   datasource:
-    url: jdbc:mysql://127.0.0.1:3307/scaffold?serverTimezone=Asia/Shanghai&characterEncoding=UTF-8
+    url: jdbc:mysql://127.0.0.1:3306/scaffold?serverTimezone=Asia/Shanghai&characterEncoding=UTF-8
     username: root
     password: root
   jackson:

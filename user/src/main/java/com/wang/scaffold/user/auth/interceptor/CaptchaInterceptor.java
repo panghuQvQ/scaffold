@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
+
 /**
  * 校验验证码拦截器：此处为 后端二次校验
  *
@@ -18,7 +20,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class CaptchaInterceptor implements PreAuthenInterceptor {
 
-	@Autowired private CaptchaService captchaService;
+	@Resource
+	private CaptchaService captchaService;
 
 	@Override
 	public void preAuthenticate(Authentication authenToken) {

@@ -147,7 +147,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         AbstractAuthenticationDetails details = (AbstractAuthenticationDetails) authResult.getDetails();
 
         String token = TokenUtils.genertateToken(JwtTokenGenerator.withProperties(jwtProperties), user); // 生成 Token
-        String refreshToken = authTokenService.createRefreshToken(user.getUsername(), details.getClientInfo());
+        String refreshToken = authTokenService.createRefreshToken(user.getUsername(), details.getClientInfo()); // 生成 刷新Token
         user.setToken(token);
         user.setRefreshToken(refreshToken);
 

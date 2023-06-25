@@ -1,0 +1,35 @@
+{
+  "users": {
+    "system": {
+      "username": "system",
+      "name": "系统管理员",
+      "password": "$2a$10$XvZWuN30cGHizgs6gRCJNOGmLU8VD0yz8gfRhmr95I53nLTNvfad2",
+      "roleNames": [
+        "系统管理员"
+      ]
+    },
+    "normal": {
+      "username": "guest",
+      "name": "访客",
+      "password": "$2a$10$XvZWuN30cGHizgs6gRCJNOGmLU8VD0yz8gfRhmr95I53nLTNvfad2"
+    }
+  },
+  "roles": {
+    "system": {
+      "name": "系统管理员",
+      "permissions": [
+        {
+          "name": "system"
+        },
+        {
+          "name": "user"
+        },
+        {
+          "name": "role"
+        }
+      ]
+    }
+  },
+  "systemUsers": ["system", "normal"],
+  "systemRoles": ["system"]
+}

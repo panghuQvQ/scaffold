@@ -94,7 +94,7 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- 验证码 -->
+        <!-- Springboot 集成 AJ-Captcha 行为验证码 -->
         <dependency>
             <groupId>com.anji-plus</groupId>
             <artifactId>spring-boot-starter-captcha</artifactId>

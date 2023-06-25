@@ -6,7 +6,7 @@ import com.anji.captcha.model.vo.CaptchaVO;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * @title CaptchaVO --->spring-boot-starter-captcha 依赖
+ * @title CaptchaVO --->spring-boot-starter-captcha 验证码 依赖
  * @description
  * @author wzy
  * @updateTime 2023/6/20 16:18
@@ -20,7 +20,7 @@ public class CaptchaAuthenticationDetails extends AbstractAuthenticationDetails 
 		super(request);
 
 		String captchaVerification = request.getParameter("captchaVerification");
-		captchaVO.setCaptchaVerification(captchaVerification);
+		captchaVO.setCaptchaVerification(captchaVerification); // 设置图片验证码的验证信息
 	}
 
 	public CaptchaVO getCaptchaVO() {

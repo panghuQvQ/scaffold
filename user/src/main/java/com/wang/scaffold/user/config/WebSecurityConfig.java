@@ -3,6 +3,11 @@ package com.wang.scaffold.user.config;
 
 import com.wang.scaffold.sharded.security.JwtAuthorizationFilter;
 import com.wang.scaffold.sharded.security.JwtProperties;
+import com.wang.scaffold.user.auth.AuthTokenService;
+import com.wang.scaffold.user.auth.JwtAuthenticationFilter;
+import com.wang.scaffold.user.auth.interceptor.CaptchaInterceptor;
+import com.wang.scaffold.user.auth.interceptor.ClientAppVersionInterceptor;
+import com.wang.scaffold.user.auth.phone.PhoneCodeAuthenticationProvider;
 import com.wang.scaffold.user.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -40,36 +45,44 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			"/ws/**"      // websocket endpoint
 	};
 
-//	@Autowired private JwtProperties jwtProperties;
-//	@Autowired private AuthTokenService authTokenService;
-//	@Autowired private UserServiceImpl userDetailsService;
-//	@Autowired private PhoneCodeAuthenticationProvider phoneCodeAuthenticationProvider;
-//	@Autowired private CaptchaInterceptor captchaInterceptor;
-//
-//	@Override
-//	protected void configure(HttpSecurity httpSecurity) throws Exception {
-//		httpSecurity.cors().and()
-//		.csrf().disable()
-//		.authorizeRequests()
-//		.anyRequest().authenticated()
-//		.and()
-//		.addFilter(this.jwtAuthenticationFilter())
+	@Autowired private JwtProperties jwtProperties;
+	@Autowired private AuthTokenService authTokenService;
+	@Autowired private UserServiceImpl userDetailsService;
+	@Autowired private PhoneCodeAuthenticationProvider phoneCodeAuthenticationProvider;
+	@Autowired private CaptchaInterceptor captchaInterceptor;
+
+	@Override
+	protected void configure(HttpSecurity httpSecurity) throws Exception {
+		httpSecurity.cors().and()
+		.csrf().disable()
+		.authorizeRequests()
+		.anyRequest().authenticated()
+		.and()
+		.addFilter(this.jwtAuthenticationFilter())
 //		.addFilter(this.jwtAuthorizationFilter())
 //		.sessionManagement()
-//		.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//
-//	}
-//
-//	private JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-//		JwtAuthenticationFilter filter = new JwtAuthenticationFilter(authenticationManager(), jwtProperties.getAuthUrl());
-//		filter.setJwtProperties(jwtProperties);
-//		filter.setAuthTokenService(authTokenService);
-//		// 验证码校验拦截器
-////		filter.addPreAuthenInterceptor(captchaInterceptor);
-//		// 手机app版本，低版本拦截器
-//		filter.addPreAuthenInterceptor(new ClientAppVersionInterceptor());
-//		return filter;
-//	}
+//		.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+		;
+
+	}
+
+
+	/**
+	 * 登录认证拦截器
+	 * @return
+	 * @throws Exception
+	 */
+	private JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
+		// authenticationManager() 调用父类：WebSecurityConfigurerAdapter 方法，获取 AuthenticationManager 对象
+		JwtAuthenticationFilter filter = new JwtAuthenticationFilter(authenticationManager(), jwtProperties.getAuthUrl());
+		filter.setJwtProperties(jwtProperties);
+		filter.setAuthTokenService(authTokenService);
+		// 验证码校验拦截器
+//		filter.addPreAuthenInterceptor(captchaInterceptor);
+		// 手机app版本，低版本拦截器
+		filter.addPreAuthenInterceptor(new ClientAppVersionInterceptor());
+		return filter;
+	}
 //
 //	private JwtAuthorizationFilter jwtAuthorizationFilter() throws Exception {
 //		JwtAuthorizationFilter filter = new JwtAuthorizationFilter(authenticationManager());

@@ -57,7 +57,7 @@ public class AuthTokenService {
         authToken.setDevice(device.getDeviceName());
         authToken.setUserAgent(clientInfo.getUserAgent());
         authToken.setRefreshToken(UUID.randomUUID().toString());
-        authTokenRepo.save(authToken);
+        authTokenRepo.save(authToken);  // 新增 authToken表数据
         userActiveLogService.log(authToken.getUsername()); // 每次创建/刷新Token记录用户活跃日志
         authTokenRepo.deleteExpiredToken(username, new Date());
         return genEcodedToken(authToken);

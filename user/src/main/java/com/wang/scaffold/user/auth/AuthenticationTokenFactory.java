@@ -60,6 +60,11 @@ public class AuthenticationTokenFactory {
 
 
 	public static Authentication buildAuthToken(HttpServletRequest request) {
+		/**
+		 * 手机端登录，生成 token
+		 * 手机端会传递这个参数 x-login-type
+ 		 */
+
 		String loginType = request.getHeader("x-login-type");
 		if (StringUtils.hasText(loginType)) {
 			switch(loginType) {
@@ -77,6 +82,7 @@ public class AuthenticationTokenFactory {
 			}
 		}
 
+
 		String phone = request.getParameter("phone");
 		String code = request.getParameter("code");
 		// 手机号码和短信验证码
@@ -86,13 +92,16 @@ public class AuthenticationTokenFactory {
 			return phoneAuthenticationToken;
 		}
 
+		/**
+		 * 客户端登录
+		 */
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		// 默认的web登录
 		// 用户名密码
 		if(StringUtils.hasText(username) && StringUtils.hasText(password)) {
 			UsernamePasswordAuthenticationToken unamePwdAuthToken = new UsernamePasswordAuthenticationToken(username, password);
-			unamePwdAuthToken.setDetails(new CaptchaAuthenticationDetails(request));
+			unamePwdAuthToken.setDetails(new CaptchaAuthenticationDetails(request)); // 填充 details 属性。此处填充的是 验证码信息
 			return unamePwdAuthToken;
 		}
 

@@ -42,14 +42,14 @@ import java.util.List;
 @Slf4j
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private final AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager; // 通过该对象的 authenticate() 进行认证，底层会调用 loadUserByUsername() 的实现
     private final List<PreAuthenInterceptor> preAuthenInterceptors = new ArrayList<PreAuthenInterceptor>();
     private JwtProperties jwtProperties;
     private AuthTokenService authTokenService;
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager, String url) {
         this.authenticationManager = authenticationManager;
-        setFilterProcessesUrl(url);
+        setFilterProcessesUrl(url); // 设置 需要身份验证的 URL
     }
 
     public void addPreAuthenInterceptor(PreAuthenInterceptor interceptor) {
@@ -65,18 +65,36 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
 
+    /**
+     * 1.当我们提交表单时，UsernamePasswordAuthenticationFilter首先会拦截请求,
+     * 而UsernamePasswordAuthenticationFilter是继承于AbstractAuthenticationProcessingFilter的，
+     * 在这个抽象类中已经定义好了doFilter的方法，而里面有一个attemptAuthentication方法是由子类实现的。
+     * 2.所以当提交表单时spring security会发现这个一个表单提交，就会调用 attemptAuthentication() 方法
+     * @param request
+     * @param response
+     * @return
+     */
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
-        Authentication authToken = AuthenticationTokenFactory.buildAuthToken(request);
+        Authentication authToken = AuthenticationTokenFactory.buildAuthToken(request); // 获取 Authentication (待被验证的)对象，里面包含了用户名，密码，以及图片验证码信息
         if (authToken == null) {
             return null;
         }
+        // 认证用户名密码前，图片验证码验证或，手机版本验证
         for (PreAuthenInterceptor preAuthenInterceptor : preAuthenInterceptors) {
             preAuthenInterceptor.preAuthenticate(authToken);
         }
         return authenticationManager.authenticate(authToken);
     }
 
+    /**
+     * 认证失败处理方法
+     * @param request
+     * @param response
+     * @param failed
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                               AuthenticationException failed) throws IOException, ServletException {
@@ -109,18 +127,26 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         }
     }
 
+    /**
+     * 认证成功处理方法
+     * @param request
+     * @param response
+     * @param filterChain
+     * @param authResult
+     */
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                             FilterChain filterChain, Authentication authResult) {
-        Assert.isInstanceOf(LoginUser.class, authResult.getPrincipal(), "Only LoginUser is supported");
+        // Assert断言工具类，通常用于数据合法性检查
+        Assert.isInstanceOf(LoginUser.class, authResult.getPrincipal(), "Only LoginUser is supported"); // obj必须能被正确造型成为clazz 指定的类
         Assert.isInstanceOf(AbstractAuthenticationDetails.class, authResult.getDetails(), "Only AbstractAuthenticationDetails is supported");
 
-        SecurityContextHolder.getContext().setAuthentication(authResult);
+        SecurityContextHolder.getContext().setAuthentication(authResult); // 存储认证成功后的对象
 
         LoginUser user = ((LoginUser) authResult.getPrincipal());
         AbstractAuthenticationDetails details = (AbstractAuthenticationDetails) authResult.getDetails();
 
-        String token = TokenUtils.genertateToken(JwtTokenGenerator.withProperties(jwtProperties), user);
+        String token = TokenUtils.genertateToken(JwtTokenGenerator.withProperties(jwtProperties), user); // 生成 Token
         String refreshToken = authTokenService.createRefreshToken(user.getUsername(), details.getClientInfo());
         user.setToken(token);
         user.setRefreshToken(refreshToken);

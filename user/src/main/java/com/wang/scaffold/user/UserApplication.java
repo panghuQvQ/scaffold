@@ -55,7 +55,7 @@ public class UserApplication implements ApplicationRunner {  // ApplicationRunne
         }
         Long rolePermsCache = redisTemplate.getExpire("cache:" + RolePermissionCacheDao.KEY_PREFIX); // 返回更新时间
 //		if (rolePermsCache == -2) {
-        cacheService.cacheRolePermission();
+        cacheService.cacheRolePermission(); // 初始缓存 权限信息
 //		}
     }
 }

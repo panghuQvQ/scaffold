@@ -18,6 +18,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * 编译时，获取默认的用户与权限信息
+ */
 @Slf4j
 public class SystemUserRoleTest {
 

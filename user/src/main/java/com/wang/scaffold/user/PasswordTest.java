@@ -9,6 +9,9 @@ import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * 编译时，即给 commonPasswords 赋值，定义所有简单密码
+ */
 public final class PasswordTest {
 
 	private static Set<String> commonPasswords = new HashSet<>();

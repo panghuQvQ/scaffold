@@ -65,13 +65,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		httpSecurity.cors().and() // 开启跨域资源共享
 		.csrf().disable() // 关闭 csrf
 		.authorizeRequests() // 开启 对url进行访问权限控制
-		.anyRequest().authenticated() // 匹配所有的请求，并且所有的请求都需要登录认证
+		.anyRequest().authenticated() // 匹配所有的请求，必须通过授权认证才可以访问
 		.and()
-		.addFilter(this.jwtAuthenticationFilter()) // 添加认证过滤器
-//		.addFilter(this.jwtAuthorizationFilter())
+		.addFilter(this.jwtAuthenticationFilter()) // 添加登录认证过滤器，/login 路由
+		.addFilter(this.jwtAuthorizationFilter()) // 添加授权过滤器
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 因为使用了JWT 所以关闭Session
 		;
-
 	}
 
 
@@ -91,16 +90,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //		filter.addPreAuthenInterceptor(new ClientAppVersionInterceptor());
 		return filter;
 	}
-//
-//	private JwtAuthorizationFilter jwtAuthorizationFilter() throws Exception {
-//		JwtAuthorizationFilter filter = new JwtAuthorizationFilter(authenticationManager());
-//		filter.setJwtProperties(jwtProperties);
-//		return filter;
-//	}
-//
 
 	/**
-	 * 待注释
+	 * 鉴权过滤器
+	 * @return
+	 * @throws Exception
+	 */
+	private JwtAuthorizationFilter jwtAuthorizationFilter() throws Exception {
+		JwtAuthorizationFilter filter = new JwtAuthorizationFilter(authenticationManager());
+		filter.setJwtProperties(jwtProperties);
+		return filter;
+	}
+
+
+	/**
+	 * 配置过的路由，完全绕过了spring security的所有filter，相当于不走spring security
 	 * @param web
 	 * @throws Exception
 	 */

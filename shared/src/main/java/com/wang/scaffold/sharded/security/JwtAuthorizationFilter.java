@@ -64,7 +64,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                 List<Integer> roleIds = pjt.getClaimList(Constants.GROUPS, o -> Integer.valueOf(o.toString()));
                 if (roleIds != null) {
                     authorities = new ArrayList<>();
-                    RolePermissionCacheDao cache = WebAppContextHelper.getBean(RolePermissionCacheDao.class);
+                    RolePermissionCacheDao cache = WebAppContextHelper.getBean(RolePermissionCacheDao.class); // 获取Spring容器中已初始化的bean
                     assert cache != null;
                     Set<String> perms = cache.getPermsByRole(roleIds);
                     for (String perm : perms) {

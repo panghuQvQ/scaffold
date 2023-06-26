@@ -59,9 +59,9 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             try {
                 List<SimpleGrantedAuthority> authorities = null;
 
-                ParsedJwtToken pjt = JwtTokenParser.useSecret(jwtProperties.getSecret()).parseToken(token);
-                String username = pjt.getUsername();
-                List<Integer> roleIds = pjt.getClaimList(Constants.GROUPS, o -> Integer.valueOf(o.toString()));
+                ParsedJwtToken pjt = JwtTokenParser.useSecret(jwtProperties.getSecret()).parseToken(token); // 解析token
+                String username = pjt.getUsername(); // 获取登录名
+                List<Integer> roleIds = pjt.getClaimList(Constants.GROUPS, o -> Integer.valueOf(o.toString())); // 获取附件，角色信息
                 if (roleIds != null) {
                     authorities = new ArrayList<>();
                     RolePermissionCacheDao cache = WebAppContextHelper.getBean(RolePermissionCacheDao.class); // 获取Spring容器中已初始化的bean

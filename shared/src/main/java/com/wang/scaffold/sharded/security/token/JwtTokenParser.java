@@ -48,6 +48,7 @@ public class JwtTokenParser {
 	}
 
 	/**
+	 * 如果这个secret被篡改了，那么这段代码将会抛出SignatureException异常。
 	 * @see io.jsonwebtoken.JwtParser#parseClaimsJws
 	 *
 	 * @param token
@@ -57,11 +58,11 @@ public class JwtTokenParser {
 	 * @throws IllegalArgumentException
 	 */
 	public ParsedJwtToken parseToken(String token) {
-		Jws<Claims> jws = Jwts.parserBuilder()
-				.setSigningKey(signingKey)
-				.setAllowedClockSkewSeconds(5)
-				.build()
-				.parseClaimsJws(token);
+		Jws<Claims> jws = Jwts.parserBuilder() // 使用Jwts.parserBuilder()方法创建一个JwtParserBuilder实例
+				.setSigningKey(signingKey) // 设置密钥
+				.setAllowedClockSkewSeconds(5) // 计算时钟偏差 5s
+				.build() // 调用JwtParserBuilder上的build()方法来返回一个线程安全的JwtParser
+				.parseClaimsJws(token); // 解析，生成原始jws
 		ParsedJwtToken result = new ParsedJwtToken(jws);
 		return result;
 	}

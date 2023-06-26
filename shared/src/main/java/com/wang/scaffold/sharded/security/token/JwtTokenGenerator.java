@@ -36,6 +36,13 @@ public class JwtTokenGenerator {
 		return generateToken(username, claims, null);
 	}
 
+	/**
+	 * 生成Token
+	 * @param username
+	 * @param claims
+	 * @param id
+	 * @return
+	 */
 	public String generateToken(String username, Map<String, List<?>> claims, String id) {
 		byte[] signingKey = properties.getSecret().getBytes();
 		JwtBuilder builder = Jwts.builder();
@@ -44,17 +51,17 @@ public class JwtTokenGenerator {
 		.setHeaderParam("v", properties.getVersion())
 		.setIssuer(properties.getTokenIssuer()) // 签发者
 		.setAudience(properties.getTokenAudience())
-		.setSubject(username) // 主题  可以是JSON数据
-		.setExpiration(new Date(System.currentTimeMillis() + properties.getExpire())); // 设置过期时间
+		.setSubject(username) // 签发的主体，比如用户名。其实它也是放在claims中的。
+		.setExpiration(new Date(System.currentTimeMillis() + properties.getExpire())); // 签发日期和失效日期，在验证的时候可以使用
 		if (id != null && id.trim().length() > 0) {
 			builder.setId(id.trim()); // 唯一的ID
 		}
 		if (claims != null) {
 			claims.forEach((k, v) -> {
-				builder.claim(k, v);
+				builder.claim(k, v); // 一些附加信息，也就是playload中的内容。由于它是一个HashMap，所以你大可以向里面扔你所需要的所有信息
 			});
 		}
-		return builder.compact();
+		return builder.compact(); // 调用compact()生成jws
 	}
 
 

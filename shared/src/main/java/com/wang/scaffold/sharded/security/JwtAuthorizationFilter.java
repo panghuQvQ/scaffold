@@ -78,7 +78,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                 }
                 if (!StringUtils.isEmpty(username)) {
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
-                    authentication.setDetails(ClientInfoUtil.extraClientInfo(request));
+                    authentication.setDetails(ClientInfoUtil.extraClientInfo(request)); // 填充 details 属性
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                     filterChain.doFilter(request, response);
                 }

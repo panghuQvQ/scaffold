@@ -10,17 +10,12 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * @author admin
@@ -36,7 +31,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity(debug = true) // 开启 测试
 @SpringBootApplication(scanBasePackages = "com.wang.scaffold")
 @EntityScan(basePackages = {"com.wang.scaffold.user.entity","com.wang.scaffold.entity.jpa"})
-public class UserApplication implements ApplicationRunner {
+public class UserApplication implements ApplicationRunner {  // ApplicationRunner：实现启动时执行指定任务
     public static void main(String[] args) {
         SpringApplication.run(UserApplication.class, args);
     }
@@ -53,12 +48,12 @@ public class UserApplication implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         try {
-            roleService.checkDefaultRoles();
-            userService.checkDefaultUsers();
+            roleService.checkDefaultRoles(); // 检查默认角色
+            userService.checkDefaultUsers(); // 检查默认用户
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Long rolePermsCache = redisTemplate.getExpire("cache:" + RolePermissionCacheDao.KEY_PREFIX);
+        Long rolePermsCache = redisTemplate.getExpire("cache:" + RolePermissionCacheDao.KEY_PREFIX); // 返回更新时间
 //		if (rolePermsCache == -2) {
         cacheService.cacheRolePermission();
 //		}

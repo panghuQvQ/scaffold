@@ -26,10 +26,19 @@ public class SystemUserRoleTest {
     private static final List<ImmutableUser> systemUsers;
     private static final List<ImmutableRole> systemRoles;
 
+    /**
+     * 1、Java静态代码块中的代码会在类加载JVM时运行，且只被执行一次
+     * 2、静态块常用来执行类属性的初始化
+     * 3、静态块优先于各种代码块以及构造函数，如果一个类中有多个静态代码块，会按照书写顺序依次执行
+     * 4、静态代码块可以定义在类的任何地方中除了方法体中【这里的方法体是任何方法体】
+     * 5、静态代码块不能访问普通变量
+     */
     static {
         // 反序列化的时候如果多了其他属性,不抛出异常
         ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         try {
+
+            // Class.getResourceAsStream(String path) ： path 不以’/'开头时默认是从此类所在的包下取资源，以’/'开头则是从ClassPath根下获取。
             JsonNode rootNode = mapper.readTree(SystemUserRoleTest.class.getResourceAsStream("/default-users.json"));
 
             final List<User> dUsers = new ArrayList<>();

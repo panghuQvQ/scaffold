@@ -13,5 +13,6 @@ public interface RoleService {
 
 	void delete(Integer roleId);
 
+	// 检查默认角色
 	void checkDefaultRoles();
 }

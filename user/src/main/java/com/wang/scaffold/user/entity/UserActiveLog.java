@@ -1,6 +1,6 @@
 package com.wang.scaffold.user.entity;
 
-import com.wang.scaffold.entity.mybatis.BaseEntity;
+import com.wang.scaffold.entity.jpa.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.GenericGenerator;

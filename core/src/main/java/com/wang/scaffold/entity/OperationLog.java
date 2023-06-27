@@ -1,5 +1,6 @@
 package com.wang.scaffold.entity;
 
+import com.wang.scaffold.annotation.SysLog;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

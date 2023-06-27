@@ -1,5 +1,6 @@
 package com.wang.scaffold.user.controller;
 
+import com.wang.scaffold.annotation.SysLog;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("Hello")
 public class HelloController {
 
+    @SysLog(module = "测试管理", operation = "查询")
     @GetMapping("/world")
     public String hello(){
         return "Hello world";

@@ -30,7 +30,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Slf4j
-@Aspect
+@Aspect // 把当前类标识为一个切面供容器读取
 @Component
 public class SysLogAspect {
 
@@ -40,18 +40,19 @@ public class SysLogAspect {
 	private ObjectMapper mapper = new ObjectMapper();
 
 	{
-		mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+		mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL); // 属性为空不序列化
 	}
 
 	/** 异步记录日志 */
 	private static ExecutorService logExecutorService = Executors.newSingleThreadExecutor();
 
-	@Pointcut("@annotation(com.wang.scaffold.annotation.SysLog)")
+	@Pointcut("@annotation(com.wang.scaffold.annotation.SysLog)") // 用于匹配当前执行方法持有指定注解的方法
 	public void logPointCut() {
 
 	}
 
-	@AfterReturning(pointcut = "logPointCut()", returning = "response")
+//	@AfterReturning(value="@annotation(com.wang.scaffold.annotation.SysLog)", returning="response") // 或者注释掉上面的切点并这样写也可以
+	@AfterReturning(pointcut = "logPointCut()", returning = "response") // 后置增强，方法正常退出时执行. returning： 要返回的变量的名称
 	public void saveSysLog(JoinPoint joinPoint, Object response) {
 		if (dataSource == null) {
 			log.error("未找到DataSource，无法记录操作日志。");
@@ -77,7 +78,7 @@ public class SysLogAspect {
 		Parameter[] parameters = method.getParameters();
 		Object[] args = joinPoint.getArgs();
 
-		outer:
+		outer: // outer标签
 			for (int i = 0; i < args.length; i++) {
 				try {
 					String paramName = parameters[i].getName();

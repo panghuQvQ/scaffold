@@ -6,12 +6,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @author wang zhen xing
- * @date 2020/6/5 17:31
- * @desc 系统操作日志
+ * @title 自定义注解
+ * @description 系统操作日志
+ * @author wzy
+ * @updateTime 2023/6/27 11:07
+ * @throws
  */
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD) // @Target说明了Annotation所修饰的对象范围：方法
+@Retention(RetentionPolicy.RUNTIME) // @Retention定义了该Annotation被保留的时间长短：在运行时有效（即运行时保留）
 public @interface SysLog {
     /**
      * 操作模块

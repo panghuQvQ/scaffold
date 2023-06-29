@@ -109,7 +109,7 @@
             <version>1.3.0</version>
         </dependency>
 
-        <!-- 整合 Spring Cloud Bus : AMQP -->
+        <!-- Spring Cloud Bus AMQP:整合了RabbitMQ -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bus-amqp</artifactId>

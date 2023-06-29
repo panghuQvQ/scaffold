@@ -7,7 +7,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 /**
- * 角色修改事件发布器
+ * 自定义角色修改事件发布器
  *
  * 实现事件发布主要需要下面几个对象：
  * 任务：随意的对象

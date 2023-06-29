@@ -3,7 +3,7 @@ package com.wang.scaffold.sharded.log;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wang.scaffold.annotation.SysLog;
-import com.wang.scaffold.entity.OperationLog;
+import com.wang.scaffold.entity.jpa.OperationLog;
 import com.wang.scaffold.sharded.helper.WebAppContextHelper;
 import com.wang.scaffold.utils.userAgent.UserAgentUtils;
 import lombok.extern.slf4j.Slf4j;

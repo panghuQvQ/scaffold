@@ -1,4 +1,4 @@
-package com.wang.scaffold.entity;
+package com.wang.scaffold.entity.jpa;
 
 import com.wang.scaffold.annotation.SysLog;
 import lombok.AllArgsConstructor;

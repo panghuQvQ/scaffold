@@ -33,3 +33,9 @@ docker compose restart [service1, service2...]
 2. 设置配置文件 application-captcha.yml
 3. 引入图片
 4. captchaService.verification(captchaVO) 方法，验证图片
+
+### WebSocket 实现
+1. 引入依赖 spring-boot-starter-websocket
+2. 添加配置文件 WebSocketConfig
+3. 引入依赖 spring-security-messaging
+4. 添加WebSocket 安全配置 WebSocketSecurityConfig

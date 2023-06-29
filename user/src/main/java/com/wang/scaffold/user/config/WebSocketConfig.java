@@ -77,10 +77,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
 		registry.addEndpoint("/ws") // 表示添加了一个/ws 端点，客户端就可以通过这个端点来进行连接。
 		.setAllowedOrigins("*") // 跨域设置，*表示所有域名都可以，不限制， 域包括ip：port, 指定*可以是任意的域名，不加的话默认localhost+本服务端口
-		.withSockJS(); // 开启SockJS支持
+		.withSockJS(); // 开启SockJS支持，当用 postman连接的时候，需要注释掉这一行
 	}
 
 	/**
+	 * 添加channel拦截器，在STOMP CONNECT阶段认证：
 	 * 设置输入消息通道的线程数，默认线程为1，可以自己自定义线程数，最大线程数，线程存活时间
 	 * @param registration
 	 */
@@ -92,6 +93,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 			public Message<?> preSend(Message<?> message, MessageChannel channel) {
 				StompHeaderAccessor accessor =
 						MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+				// 判断是否首次连接请求
 				if (StompCommand.CONNECT.equals(accessor.getCommand())) {
 					List<String> l = accessor.getNativeHeader("auth_token");
 					if (l != null && l.size() > 0) {

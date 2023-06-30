@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 /**
- * 自定义事件监听器
+ * 自定义事件订阅者(观察者)
  *
  * ApplicationContext事件机制是观察者设计模式的实现，通过ApplicationEvent类和ApplicationListener接口，可以实现ApplicationContext事件处理。
  * 实现ApplicationListener<ContextRefreshedEvent>接口可以收到监听动作，然后可以写自己的逻辑。

@@ -39,6 +39,7 @@ docker compose restart [service1, service2...]
 2. 添加配置文件 WebSocketConfig.class
 3. 引入依赖 spring-security-messaging 集成 Spring Security
 4. 添加WebSocket 安全配置 WebSocketSecurityConfig.class
+5. 封装工具类,用于发送消息广播或推送, NotifyController.class
 
 
 ### Spring Cloud Bus AMQP 实现消息的订阅与广播大纲

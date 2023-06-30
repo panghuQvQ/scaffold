@@ -53,8 +53,8 @@ docker compose restart [service1, service2...]
 1. 引入依赖 spring-boot-configuration-processor
 2. 编写配置类,例如 JwtProperties.class 使用 @ConfigurationProperties
 3. yaml 提示编写, 在 resources---> META-INF ---> additional-spring-configuration-metadata.json 中添加
-   1. name: 属性全名,例：jwt.authUrl
-   2. type: 属性的数据类型的完整签名,例：java.lang.String
-   3. description: 属性描述
-   4. defaultValue: 默认值
+   - name: 属性全名,例：jwt.authUrl
+   - type: 属性的数据类型的完整签名,例：java.lang.String
+   - description: 属性描述
+   - defaultValue: 默认值
 

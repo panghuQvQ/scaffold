@@ -113,6 +113,7 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- 用@ConfigurationProperties注释的项轻松生成自定义配置类的元数据文件，即在yml文件中可以有属性的提示信息-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>

@@ -18,5 +18,6 @@
         <module>user</module>
         <module>core</module>
         <module>shared</module>
+        <module>files</module>
     </modules>
 </project>

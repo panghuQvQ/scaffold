@@ -1,3 +1,29 @@
 spring:
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/scaffold?serverTimezone=Asia/Shanghai&characterEncoding=UTF-8
+  jpa:
+    show-sql: true
+    generate-ddl: false
+    properties:
+      hibernate.format_sql: true
+  cloud:
+    nacos:
+      server-addr: 172.16.10.132:8848
+      discovery:
+        username: nacos
+        password: nacos
+    stream:
+      default:
+        group: ${spring.application.name}-${spring.cloud.client.ip-address}-${server.port}
+
+logging:
+  file:
+    path: ../../logs/scaffold/user  # 当前模块的上上层目录创建日志
+  level:
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
+    com.wang.scaffold: DEBUG
+    org.springframework.security: DEBUG
+#    org.springframework.web: trace
+
+jwt:
+  expire: 100000000

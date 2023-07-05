@@ -22,12 +22,12 @@ import java.util.Objects;
  */
 public class SpringWebFileTransfer implements FileTransfer {
 
-	private MultipartFile multipartFile;
+	private MultipartFile multipartFile; // 多文件
 	private TransferHandler handler;
-	private RenameStrategy renameStrategy;
-	private PathStrategy pathStrategy;
+	private RenameStrategy renameStrategy; // 重命名策略
+	private PathStrategy pathStrategy; // 路径策略
 
-	private String path;
+	private String path; // 路径
 	private String pathPrefix;
 	private String urlPrefix;
 	private String fileName;

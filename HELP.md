@@ -52,10 +52,12 @@ docker compose restart [service1, service2...]
 
 ### 自定义 yaml 文件提示信息,实现大纲
 1. 引入依赖 spring-boot-configuration-processor
-2. 编写配置类,例如 JwtProperties.class 使用 @ConfigurationProperties
+2. 编写配置类,例如 JwtProperties.class 使用 @ConfigurationProperties(prefix="xxx")
+   1. 配置类: 注意属性私有,且需要生成get、set方法
+   2. @EnableConfigurationProperties(JwtProperties.class) 或 @Component 引入Spring容器
 3. yaml 提示编写, 在 resources---> META-INF ---> additional-spring-configuration-metadata.json 中添加
-   - name: 属性全名,例：jwt.authUrl
-   - type: 属性的数据类型的完整签名,例：java.lang.String
-   - description: 属性描述
-   - defaultValue: 默认值
+   - name: 属性全名,例：jwt
+   - type: 属性的数据类型的完整签名,例：com.wang.scaffold.sharded.security.JwtProperties
+   - description: 属性描述,该属性可在类中添加注释即可
+   - defaultValue: 默认值,该属性可在类中添加默认值
 

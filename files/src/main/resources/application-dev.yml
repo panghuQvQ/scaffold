@@ -1,0 +1,33 @@
+spring:
+#  datasource:
+#    url: jdbc:mysql://127.0.0.1:3306/scaffold?serverTimezone=Asia/Shanghai&characterEncoding=UTF-8
+  jpa:
+    show-sql: true
+#    generate-ddl: false
+  cloud:
+    nacos:
+      server-addr: 172.16.10.132:8848
+      discovery:
+        username: nacos
+        password: nacos
+    stream:
+      default:
+        group: ${spring.application.name}-${spring.cloud.client.ip-address}-${server.port}
+
+logging:
+  file:
+    path: ../../logs/scaffold/files  # 当前模块的上上层目录创建日志
+  level:
+    com.wang.scaffold: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.web: trace
+
+file:
+  locations:
+    disk:
+      storagePath: /Users/weizhou/devfiles/testFiles/
+      urlMapping: http://localhost:8086/files/public/
+    disk-protected:
+      storagePath: /Users/weizhou/devfiles/testFiles/protected/
+      urlMapping: http://localhost:8086/files/protected/
+

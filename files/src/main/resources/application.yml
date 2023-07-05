@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: files
+  profiles:
+    active:
+      - "@activated.profile@"
+  jackson:
+    date-format: yyyy-MM-dd HH:mm
+    time-zone: GMT+8
+  cloud:
+    nacos:
+      server-addr: 172.16.10.132:8848
+      discovery:
+        username: nacos
+        password: nacos
+server:
+  port: 8086
+  servlet:
+    context-path: /files
+
+jwt:
+  secret: e2lVkjDNgBcC6iFaW9w1oAEfT0pOxtyG

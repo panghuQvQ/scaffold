@@ -28,7 +28,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @EnableAspectJAutoProxy
 @EnableRedisRepositories(basePackages = {"com.wang.scaffold.user.redisrepo"})
 @EnableJpaRepositories(basePackages = {"com.wang.scaffold.user.repository"})
-@EnableWebSecurity(debug = true) // 开启 测试
+//@EnableWebSecurity(debug = true) // 开启 测试
 @SpringBootApplication(scanBasePackages = "com.wang.scaffold")
 @EntityScan(basePackages = {"com.wang.scaffold.user.entity","com.wang.scaffold.entity.jpa"})
 public class UserApplication implements ApplicationRunner {  // ApplicationRunner：实现启动时执行指定任务

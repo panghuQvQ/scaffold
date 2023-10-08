@@ -12,10 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
@@ -40,7 +37,8 @@ public class OperationLogController {
                 ps.add(cb.like(root.get("operation").as(String.class), "%" + pageRequest.getOperation() + "%"));
             }
             if (pageRequest.getStart() != null && pageRequest.getEnd() != null) {
-                ps.add(cb.between(root.get("operateTime").as(Date.class), pageRequest.getStart(), pageRequest.getEnd()));
+                Date realEnd = new Date(pageRequest.getEnd().getTime() + 24 * 3600 * 1000 - 1);
+                ps.add(cb.between(root.get("operateTime").as(Date.class), pageRequest.getStart(), realEnd));
             }
             return cb.and(ps.toArray(new Predicate[0]));
         }, pageReq);

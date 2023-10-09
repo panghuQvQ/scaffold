@@ -35,6 +35,12 @@ public class SpringWebFileTransfer implements FileTransfer {
 	public SpringWebFileTransfer() {
 	}
 
+	/**
+	 *
+	 * @param handler
+	 * @param renameStrategy
+	 * @param pathStrategy
+	 */
 	public SpringWebFileTransfer(TransferHandler handler, RenameStrategy renameStrategy, PathStrategy pathStrategy) {
 		this.handler = handler;
 		this.renameStrategy = renameStrategy;
@@ -63,16 +69,16 @@ public class SpringWebFileTransfer implements FileTransfer {
 		Objects.requireNonNull(this.pathStrategy, "PathStrategy 不能为null");
 		Objects.requireNonNull(multipartFile, "MultipartFile 不能为null");
 		Objects.requireNonNull(handler, "FileHandler 不能为null");
-		InputStream ins = multipartFile.getInputStream();
-		String originalFilename = multipartFile.getOriginalFilename();
+		InputStream ins = multipartFile.getInputStream(); // 获取InputStream
+		String originalFilename = multipartFile.getOriginalFilename(); // 获取文件的完整名称，文件名+后缀名
 		if (this.path == null) {
-			this.path = pathStrategy.getRepository();
+			this.path = pathStrategy.getRepository(); // 设置 资源存储路径 /2023/10/
 		}
 		if (this.pathPrefix == null) {
-			this.pathPrefix = pathStrategy.getLocationPrefix();
+			this.pathPrefix = pathStrategy.getLocationPrefix(); // 设置 储存地址前缀 D:/testFiles/
 		}
 		if (this.urlPrefix == null) {
-			this.urlPrefix = pathStrategy.getUrlPrefix();
+			this.urlPrefix = pathStrategy.getUrlPrefix(); // 设置 页面访问资源url地址前缀 http://localhost:8086/files/public/
 		}
 		if (this.fileName == null) {
 			if (this.renameStrategy != null) {
@@ -80,10 +86,10 @@ public class SpringWebFileTransfer implements FileTransfer {
 			} else {
 				this.fileName = originalFilename;
 			}
-			String originalExtension = FilenameUtils.getExtension(originalFilename);
-			String extension = FilenameUtils.getExtension(this.fileName);
+			String originalExtension = FilenameUtils.getExtension(originalFilename); // JDK提供方法：获取原始文件后缀
+			String extension = FilenameUtils.getExtension(this.fileName); // 获取 根据重命名策略生成的文件名 的后缀
 			if (!StringUtils.hasText(extension) && StringUtils.hasText(originalExtension)) {
-				this.fileName = this.fileName + "." + originalExtension;
+				this.fileName = this.fileName + "." + originalExtension; // 拼接 重命名文件名 + 原始文件后缀
 			}
 		}
 		return handler.doTransfer(ins, originalFilename, fileName, path, pathPrefix, urlPrefix);

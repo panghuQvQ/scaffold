@@ -30,11 +30,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @EnableJpaRepositories(basePackages = {"com.wang.scaffold.user.repository"})
 //@EnableWebSecurity(debug = true) // 开启 测试
 @SpringBootApplication(scanBasePackages = "com.wang.scaffold")
-@EntityScan(basePackages = {"com.wang.scaffold.user.entity","com.wang.scaffold.entity.jpa"})
+@EntityScan(basePackages = {"com.wang.scaffold.user.entity", "com.wang.scaffold.entity.jpa"})
 public class UserApplication implements ApplicationRunner {  // ApplicationRunner：实现启动时执行指定任务
-    public static void main(String[] args) {
-        SpringApplication.run(UserApplication.class, args);
-    }
 
     @Autowired
     StringRedisTemplate redisTemplate;
@@ -44,6 +41,10 @@ public class UserApplication implements ApplicationRunner {  // ApplicationRunne
     RoleService roleService;
     @Autowired
     UserService userService;
+
+    public static void main(String[] args) {
+        SpringApplication.run(UserApplication.class, args);
+    }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {

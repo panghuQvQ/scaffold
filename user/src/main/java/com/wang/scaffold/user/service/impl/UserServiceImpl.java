@@ -39,6 +39,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     RoleRepo roleRepo;
     @Autowired
+    @Lazy
     PasswordEncoder passwordEncoder;
     @Autowired
     JdbcTemplate jdbcTemplate;

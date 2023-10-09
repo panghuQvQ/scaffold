@@ -41,8 +41,8 @@ public class WebConfig implements WebMvcConfigurer {
 
 
     /**
-     * 自定义资源映射。这个东西也比较常用，业务场景就是自己的服务器作为文件服务器，不利用第三方的图床，就需要一个虚拟路径映射到我们服务器的地址。
-     * 值得一提的是，如果你的项目是war包启动，一般都是再Tomcat中配置一下（配置方法请百度）；
+     * 添加静态资源---自定义资源映射。这个东西也比较常用，业务场景就是自己的服务器作为文件服务器，不利用第三方的图床，就需要一个虚拟路径映射到我们服务器的地址。
+     * 值得一提的是，如果你的项目是war包启动，一般都是在 Tomcat 中配置一下（配置方法请百度）；
      * 如果是jar包启动（SpringBoot经常用这种方式启动），就可以用到这个方法了。
      *
      * @param registry
@@ -51,7 +51,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // .addResourceLocations("files:XXX") 可以指定磁盘绝对路径，同样可以配置多个位置，注意路径写法需要加上file:
         // .addResourceLocations("classpath:/static/")
-        // 访问public 文件夹中的fengjing.jpg 图片的地址为 http://localhost:8080/public/fengjing.jpg  会路由到本地磁盘路径下寻找
+        // 访问public 文件夹中的fengjing.jpg 图片的地址为 http://localhost:8080/public/fengjing.jpg  会路由到本地磁盘(D:/testFiles/fengjing.jpg)路径下寻找
         registry.addResourceHandler("/public/**").addResourceLocations("file:"+uploadFileProperties.getPublicDiskLocationConfig().getStoragePath());
         registry.addResourceHandler("/protected/**").addResourceLocations("file:" + uploadFileProperties.getProtectedDiskLocationConfig().getStoragePath());
         registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
@@ -91,9 +91,9 @@ public class WebConfig implements WebMvcConfigurer {
      */
     @Bean
     public SpringWebFileTransfer diskFileTransfer() {
-        TransferHandler transferHandler = new SaveToDisk();
-        RenameStrategy renameStrategy = new RenameByFriendlyId();
-        PathStrategy pathStrategy = new PublicDiskFilePathStrategy(uploadFileProperties.getPublicDiskLocationConfig());
+        TransferHandler transferHandler = new SaveToDisk(); // 用于保存到磁盘的对象
+        RenameStrategy renameStrategy = new RenameByFriendlyId(); // 使用UUID重命名文件
+        PathStrategy pathStrategy = new PublicDiskFilePathStrategy(uploadFileProperties.getPublicDiskLocationConfig()); // 定义 公共磁盘文件路径策略
         SpringWebFileTransfer fileTransfer = new SpringWebFileTransfer(transferHandler, renameStrategy, pathStrategy);
         return fileTransfer;
     }
@@ -106,7 +106,7 @@ public class WebConfig implements WebMvcConfigurer {
     public SpringWebFileTransfer diskProtectedFileTransfer() {
         TransferHandler transferHandler = new SaveToDisk();
         PathStrategy pathStrategy = new PropertiesConfigPathStrategy(uploadFileProperties.getProtectedDiskLocationConfig());
-        RenameStrategy renameStrategy = (String original) -> {
+        RenameStrategy renameStrategy = (String original) -> {  // 使用Lambda表达式来表示该接口的一个实现
             return FilenameUtil.sanitizeName(original);
         };
         SpringWebFileTransfer fileTransfer = new SpringWebFileTransfer(transferHandler, renameStrategy, pathStrategy);

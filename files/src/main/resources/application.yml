@@ -20,3 +20,12 @@ server:
 
 jwt:
   secret: e2lVkjDNgBcC6iFaW9w1oAEfT0pOxtyG
+
+file:
+  locations:
+    disk:
+      storage-path: D:/testFiles/
+      url-mapping: http://localhost:8086/files/public/
+    disk-protected:
+      storage-path: D:/testFiles/protected/
+      url-mapping: http://localhost:8086/files/protected/

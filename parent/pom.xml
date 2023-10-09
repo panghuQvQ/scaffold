@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.5.RELEASE</version>
+        <version>2.7.15</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.wang</groupId>
@@ -17,14 +17,16 @@
     <!-- properties：定义全局变量 -->
     <properties>
         <java.version>11</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring.cloud.alibaba.version>2.2.6.RELEASE</spring.cloud.alibaba.version>
-        <spring-cloud.version>Hoxton.SR9</spring-cloud.version>
-        <mybatis-plus.version>3.4.1</mybatis-plus.version>
-        <packaging.type>jar</packaging.type>
-        <jjwt.version>0.11.2</jjwt.version>
-        <lettuce.version>6.0.1.RELEASE</lettuce.version>
-        <apache-poi.version>4.1.2</apache-poi.version>
+        <spring-cloud.version>2021.0.8</spring-cloud.version>
+        <mybatis-plus.version>3.5.3.2</mybatis-plus.version>
+        <apache-poi.version>5.2.3</apache-poi.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
+        <jjwt.version>0.11.5</jjwt.version>
+        <lettuce.version>6.2.6.RELEASE</lettuce.version>
+        <packaging.type>jar</packaging.type>
     </properties>
 
     <!-- 指定仓库 -->
@@ -116,7 +118,7 @@
            <dependency>
                <groupId>org.projectlombok</groupId>
                <artifactId>lombok</artifactId>
-               <version>1.18.26</version>
+               <version>1.18.28</version>
            </dependency>
 
        </dependencies>
@@ -153,6 +155,44 @@
                         <includes>
                             <include>application.*</include>
                             <include>application-dev.*</include>
+                        </includes>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+        <profile>
+            <id>docker</id>
+            <properties>
+                <activated.profile>docker</activated.profile>
+                <!-- redis连接 -->
+                <redis.host>scaffold-redis</redis.host>
+                <redis.port>6379</redis.port>
+                <!-- rabbitmq连接 -->
+                <rabbitmq.host>scaffold-rabbitmq</rabbitmq.host>
+                <!-- 数据库 -->
+                <datasource.url><![CDATA[jdbc:mysql://scaffold-mysql:3306/scaffold?serverTimezone=Asia/Shanghai&characterEncoding=UTF-8]]></datasource.url>
+                <datasource.username>root</datasource.username>
+                <datasource.password>root</datasource.password>
+                <!-- jwt -->
+                <jwt.secret>e2lVkjDNgBcC6iFaW9w1oAEfT0pOxtyG</jwt.secret>
+            </properties>
+            <build>
+                <resources>
+                    <resource>
+                        <filtering>false</filtering>
+                        <directory>src/main/resources</directory>
+                        <excludes>
+                            <exclude>application-dev.*</exclude>
+                            <exclude>application-preview.*</exclude>
+                            <exclude>application-release.*</exclude>
+                        </excludes>
+                    </resource>
+                    <resource>
+                        <filtering>true</filtering>
+                        <directory>src/main/resources</directory>
+                        <includes>
+                            <include>application.*</include>
+                            <include>application-docker.*</include>
                         </includes>
                     </resource>
                 </resources>

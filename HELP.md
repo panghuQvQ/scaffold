@@ -61,3 +61,7 @@ docker compose restart [service1, service2...]
    - description: 属性描述,该属性可在类中添加注释即可
    - defaultValue: 默认值,该属性可在类中添加默认值
 
+### JDK提供方法
+FilenameUtils.getExtension(originalFilename); // 获取原始文件后缀
+Paths.get(pathPrefix, path); // 将路径字符串或连接后形成路径字符串的字符串序列转换为 Path。
+Paths.get(pathPrefix, path).normalize(); // 将路径字符串或连接后形成路径字符串的字符串序列转换为 Path。 删除了冗余名称元素的路径 例如：..

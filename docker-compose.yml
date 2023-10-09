@@ -1,0 +1,109 @@
+version: "3.7"
+services:
+  redis:
+    image: redis
+    container_name: scaffold-redis
+    ports:
+      - "16379:6379"
+    networks:
+      - myNetwork
+    environment:
+      - TZ=Asia/Shanghai
+    restart: unless-stopped
+
+  rabbitmq:
+    image: rabbitmq
+    container_name: scaffold-rabbitmq
+    ports:
+      - "15672:5672"
+    networks:
+      - myNetwork
+    environment:
+      - TZ=Asia/Shanghai
+    restart: unless-stopped
+
+  mysql:
+    image: mysql
+    container_name: scaffold-mysql
+    ports:
+      - "23306:3306"
+    networks:
+      - myNetwork
+    environment:
+      - TZ=Asia/Shanghai
+      - MYSQL_ROOT_PASSWORD=root
+    restart: unless-stopped
+      
+  eureka:
+    build: ./eureka
+    image: scaffold/eureka:latest
+    container_name: scaffold-eureka
+    volumes:
+      - /home/scaffold-logs/scaffold_eureka:/logs
+    #      - D:\logs\scaffold_eureka:/logs
+    networks:
+      - myNetwork
+    ports:
+      - "18761:8761"
+    environment:
+      - TZ=Asia/Shanghai
+    restart: unless-stopped
+
+  user:
+    build: ./user
+    image: scaffold/user:latest
+    container_name: scaffold-user
+    volumes:
+      - /home/scaffold-logs/scaffold_user:/logs
+    #      - D:\logs\scaffold_user:/logs
+    networks:
+      - myNetwork
+    ports:
+      - "18085:8085"
+    depends_on:
+      - redis
+      - rabbitmq
+      - eureka
+    environment:
+      - TZ=Asia/Shanghai
+      
+  files:
+    build: ./files
+    image: scaffold/files:latest
+    container_name: scaffold-files
+    volumes:
+      - /home/scaffold-logs/scaffold_files:/logs
+      - /home/scaffold-uploadfile:/home/uploadfile
+    #      - D:\logs\scaffold_files:/logs
+    #      - D:\scaffold-uploadfile:/home/uploadfile
+    networks:
+      - myNetwork
+    ports:
+      - "18086:8086"
+    depends_on:
+      - redis
+      - rabbitmq
+      - eureka
+    environment:
+      - TZ=Asia/Shanghai
+      
+  api:
+    build: ./api
+    image: scaffold/api:latest
+    container_name: scaffold-api
+    volumes:
+      - /home/scaffold-logs/scaffold_api:/logs
+    #      - D:\logs\scaffold_api:/logs
+    networks:
+      - myNetwork
+    ports:
+      - "18080:8080"
+    depends_on:
+      - redis
+      - eureka
+    environment:
+      - TZ=Asia/Shanghai
+
+networks:
+  myNetwork:
+    name: scaffold

@@ -1,8 +1,6 @@
 package com.wang.scaffold.user;
 
 import com.wang.scaffold.user.eventpub.RoleModifyEventPublisher;
-import com.wang.scaffold.user.test.PricticePublisher;
-import com.wang.scaffold.user.test.TestPublisher;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -21,16 +19,8 @@ public class PublishTest {
     @Resource
     RoleModifyEventPublisher roleModifyEventPublisher;
 
-    @Resource
-    TestPublisher testPublisher;
-
-    @Resource
-    PricticePublisher pricticePublisher;
-
     @Test
     public void publishTest(){
         roleModifyEventPublisher.publish();
-//        testPublisher.publish();
-//        pricticePublisher.publish();
     }
 }

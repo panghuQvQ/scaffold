@@ -12,6 +12,9 @@ spring cloud微服务架构后端脚手架
 * user 用户
 
 ### maven commands
+> -P xxx ，激活id为xxx的profile(如有多个，用逗号隔开) <br>
+> -DskipTests 打包时，跳过src->test 测试文件夹
+
 mvn clean package -P docker -DskipTests
 
 ### 移动打包好后的文件

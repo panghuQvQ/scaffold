@@ -31,6 +31,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 //@EnableWebSecurity(debug = true) // 开启 测试
 @SpringBootApplication(scanBasePackages = "com.wang.scaffold")
 @EntityScan(basePackages = {"com.wang.scaffold.user.entity", "com.wang.scaffold.entity.jpa"})
+//@EnableDiscoveryClient  // 现在新版已不需要添加此注解
 public class UserApplication implements ApplicationRunner {  // ApplicationRunner：实现启动时执行指定任务
 
     @Autowired

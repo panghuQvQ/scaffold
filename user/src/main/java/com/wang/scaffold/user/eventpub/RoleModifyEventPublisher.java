@@ -19,7 +19,8 @@ public class RoleModifyEventPublisher {
 
 	@Autowired ApplicationEventPublisher applicationEventPublisher;
 
-	@Autowired BusProperties busProperties;
+	@Autowired
+	BusProperties busProperties;
 
 	// 发布事件
 	public void publish() {

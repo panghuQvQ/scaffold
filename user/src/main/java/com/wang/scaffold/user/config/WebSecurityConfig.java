@@ -6,11 +6,15 @@ import com.wang.scaffold.sharded.security.JwtProperties;
 import com.wang.scaffold.user.auth.AuthTokenService;
 import com.wang.scaffold.user.auth.JwtAuthenticationFilter;
 import com.wang.scaffold.user.auth.interceptor.CaptchaInterceptor;
+import com.wang.scaffold.user.auth.interceptor.ClientAppVersionInterceptor;
 import com.wang.scaffold.user.auth.phone.PhoneCodeAuthenticationProvider;
 import com.wang.scaffold.user.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,6 +24,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
 /**
  * @author wzy
@@ -80,7 +85,7 @@ public class WebSecurityConfig {
      * <p>
      * 开启SpringSecurity的跨域访问：
      *
-     * @param httpSecurity
+     * @param http
      * @throws Exception
      */
     @Bean

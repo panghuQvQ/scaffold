@@ -1,0 +1,24 @@
+spring:
+  jmx:
+    enabled: false # 默认关闭，不将管理bean暴露给JMX域。
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848 # 服务地址
+      discovery:
+        username: nacos
+        password: nacos
+    gateway:
+      routes:
+        - id: user
+          uri: lb://user
+          predicates:
+            - Path=/user/**
+
+        - id: files
+          uri: lb://files
+          predicates:
+            - Path=/files/**
+logging:
+  file:
+    path: /logs
+

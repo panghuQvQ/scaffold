@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: api
+  profiles:
+    active: # 在主配置文件中激活哪个配置文件, 那个配置文件的优先级是高于主配置文件的优先级的
+      - "@activated.profile@"
+  cloud:
+    nacos:
+      server-addr: 172.16.10.132:8847 # 服务地址
+      discovery:
+        username: nacos
+        password: nacos
+    gateway:
+      default-filters: # 剔除响应头中重复的值
+      - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+      globalcors: # Gateway跨域配置
+        cors-configurations:
+          '[/**]': # 允许跨域访问的资源
+            allowedOrigins: # 跨域允许的来源
+            - "http://localhost"
+            - "http://127.0.0.1"
+            allowedMethods:
+            - GET
+            - POST
+            - OPTIONS
+            - DELETE
+
+server:
+  port: 8080

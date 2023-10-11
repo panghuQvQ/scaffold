@@ -19,5 +19,6 @@
         <module>core</module>
         <module>shared</module>
         <module>files</module>
+        <module>api</module>
     </modules>
 </project>

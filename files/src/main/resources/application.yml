@@ -7,12 +7,21 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm
     time-zone: GMT+8
+  servlet:
+    multipart: # 默认支持多文件上传
+      max-file-size: 1024MB # 最大支持文件大小
+      max-request-size: 2048MB # 最大支持请求大小
   cloud:
     nacos:
       server-addr: 172.16.10.132:8848
       discovery:
         username: nacos
         password: nacos
+  task:
+    execution:
+      pool:
+        core-size: 2
+        max-size: 8
 server:
   port: 8086
   servlet:

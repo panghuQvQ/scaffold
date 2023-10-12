@@ -4,15 +4,17 @@ spring:
   jpa:
     show-sql: true
 #    generate-ddl: false
+  task:
+    execution:
+      pool:
+        core-size: 1
+        max-size: 8
   cloud:
     nacos:
       server-addr: 172.16.10.132:8848
       discovery:
         username: nacos
         password: nacos
-    stream:
-      default:
-        group: ${spring.application.name}-${spring.cloud.client.ip-address}-${server.port}
 
 logging:
   file:
@@ -20,14 +22,14 @@ logging:
   level:
     com.wang.scaffold: DEBUG
     org.springframework.security: DEBUG
-    org.springframework.web: trace
+#    org.springframework.web: trace
 
 file:
   locations:
     disk:
-      storagePath: /Users/weizhou/devfiles/testFiles/
+      storagePath: /Users/wang/devfiles/testFiles/
       urlMapping: http://localhost:8086/files/public/
     disk-protected:
-      storagePath: /Users/weizhou/devfiles/testFiles/protected/
+      storagePath: /Users/wang/devfiles/testFiles/protected/
       urlMapping: http://localhost:8086/files/protected/
 

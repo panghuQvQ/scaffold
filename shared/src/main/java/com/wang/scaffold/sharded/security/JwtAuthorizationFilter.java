@@ -14,6 +14,7 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,8 +43,10 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     private JwtProperties jwtProperties;
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager) {
-        super(authenticationManager);
+    public JwtAuthorizationFilter() {
+        super(authentication -> {
+            throw new AuthenticationServiceException("This filter is not suppose to authenticate " + authentication);
+        });
     }
 
     public void setJwtProperties(JwtProperties jwtProperties) {

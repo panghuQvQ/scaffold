@@ -4,17 +4,22 @@ import com.wang.scaffold.sharded.security.JwtAuthorizationFilter;
 import com.wang.scaffold.sharded.security.JwtProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
 
 @EnableConfigurationProperties(JwtProperties.class)
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+@Configuration
+public class WebSecurityConfig {
 
 	@Autowired
 	JwtProperties jwtProperties;
@@ -24,9 +29,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	 */
 	public static final String[] BYPASS_PATTERNS = {"/public/**", "/protected/**", "/static/**", "/error"};
 
-	@Override
-	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity.cors().and()
+	@Bean
+	public WebSecurityCustomizer webSecurityCustomizer() {
+		return (web) -> web.ignoring().antMatchers(BYPASS_PATTERNS);
+	}
+
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		http.cors().and()
 				.csrf().disable()
 				.authorizeRequests()
 				.anyRequest().authenticated()
@@ -34,17 +44,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.addFilter(this.jwtAuthorizationFilter())
 				.sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
+		return http.build();
 	}
 
-	private JwtAuthorizationFilter jwtAuthorizationFilter() throws Exception{
-		JwtAuthorizationFilter filter = new JwtAuthorizationFilter(authenticationManager());
+	private JwtAuthorizationFilter jwtAuthorizationFilter() {
+		JwtAuthorizationFilter filter = new JwtAuthorizationFilter();
 		filter.setJwtProperties(jwtProperties);
 		return filter;
-	}
-
-	@Override
-	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers(BYPASS_PATTERNS);
 	}
 }

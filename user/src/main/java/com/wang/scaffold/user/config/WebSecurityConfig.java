@@ -61,6 +61,10 @@ public class WebSecurityConfig {
     @Autowired
     private ObjectPostProcessor<Object> objectPostProcessor;
 
+    public WebSecurityConfig(ObjectPostProcessor<Object> objectPostProcessor) {
+        this.objectPostProcessor = objectPostProcessor;
+    }
+
     @Bean
     public AuthenticationManager authenticationManager() {
         AuthenticationManagerBuilder managerBuilder = new AuthenticationManagerBuilder(objectPostProcessor);
@@ -142,7 +146,7 @@ public class WebSecurityConfig {
      * @throws Exception
      */
     private JwtAuthorizationFilter jwtAuthorizationFilter() throws Exception {
-        JwtAuthorizationFilter filter = new JwtAuthorizationFilter(authenticationManager());
+        JwtAuthorizationFilter filter = new JwtAuthorizationFilter();
         filter.setJwtProperties(jwtProperties);
         return filter;
     }

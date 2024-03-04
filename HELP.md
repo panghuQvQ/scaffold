@@ -46,12 +46,18 @@ docker compose restart [service1, service2...]
 
 
 ### Spring Cloud Bus AMQP 实现消息的订阅与广播大纲
-1. docker 配置 rabbimq
-2. 引入依赖 spring-cloud-starter-bus-amqp
-3. 实现自定义事件 RoleModifyEvent.class
-4. 实现自定义发布器 RoleModifyEventPublisher.class
-5. 实现自定义事件订阅者 RolePermissionCacheDao.class
-6. 在所需模块添加 自定义事件配置 CloudEventListeners.class
+1. docker 配置 rabbimq,需要映射的端口有 15672、5672、61613
+   1. 15672: web管理界面
+   2. 5672：AMQP协议,服务通信端口
+   3. 61613：STOMP协议(WebSocket),服务通信端口
+2. 由于本系统连接的RabbitMQ 都是默认配置, 未在配置文件中修改信息,所以可通过 `RabbitProperties.class` ,查看对应的登录名与密码(guest,guest)
+3. 引入依赖 spring-cloud-bus 、 spring-cloud-starter-bus-amqp
+   1. 交换机(springCloudBus)与队列(springCloudBus.anonymous.XXXX)在引入依赖后会自动创建,并关联在一起
+4. 实现自定义事件 RoleModifyEvent.class
+5. 实现自定义发布器 RoleModifyEventPublisher.class
+6. 在所需模块添加 自定义事件监听器配置 CloudEventListeners.class
+7. 实现自定义事件订阅者 RolePermissionCacheDao.class
+
 
 ### 自定义 yaml 文件提示信息,实现大纲
 1. 引入依赖 spring-boot-configuration-processor

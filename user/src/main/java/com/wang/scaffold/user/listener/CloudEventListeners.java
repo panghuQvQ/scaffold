@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 配置自定义对象：将 RoleModifyEvent 加载到Bus的上下文中
+ * 配置自定义对象监听器：将 RoleModifyEvent 加载到Bus的上下文中
  */
 @RemoteApplicationEventScan({"com.wang.scaffold.shared.cloudevent"})
 @Configuration
